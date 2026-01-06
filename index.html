@@ -360,39 +360,51 @@ function positionElements() {
         const photos = document.querySelector('.photos');
 
         const vh = window.innerHeight;
+        const vw = window.innerWidth;
         
-        // 使用 getBoundingClientRect() 获取 photos 缩放后的实际位置
+        // 获取 photos 的实际位置（考虑 scale: 300%）
         const photosRect = photos.getBoundingClientRect();
-        const photosTopY = photosRect.top;
-        const photosBottomY = photosRect.bottom;
+        
+        // 关键：photos 被 scale 放大后超出屏幕，我们需要计算可见部分
+        // 可见部分的顶部 = max(0, rect.top)，底部 = min(vh, rect.bottom)
+        const visibleTop = Math.max(0, photosRect.top);
+        const visibleBottom = Math.min(vh, photosRect.bottom);
         
         const hh = header.offsetHeight;
         const ch = contact.offsetHeight;
 
-        // 计算上方和下方的空白区域
-        const topSpace = photosTopY;
-        const bottomSpace = vh - photosBottomY;
+        // 计算上方和下方的实际可用空白区域
+        const topSpace = visibleTop;
+        const bottomSpace = vh - visibleBottom;
 
         // Header 在上方空白区域居中
-        const headerTop = Math.max(0, (topSpace - hh) / 2);
+        const headerTop = (topSpace - hh) / 2;
         
         // Contact 在下方空白区域居中
-        const contactBottom = Math.max(0, (bottomSpace - ch) / 2);
+        const contactBottom = (bottomSpace - ch) / 2;
 
-        // 应用定位
+        // 应用定位 - 保持水平居中
         header.style.top = `${headerTop}px`;
         header.style.bottom = 'auto';
+        header.style.left = '50%';
+        header.style.transform = 'translateX(-50%)';
         
         contact.style.bottom = `${contactBottom}px`;
         contact.style.top = 'auto';
+        contact.style.left = '50%';
+        contact.style.transform = 'translateX(-50%)';
 
-        // Debug 信息（可选）
+        // Debug 信息
         console.log({
             vh,
-            photosTopY,
-            photosBottomY,
+            'photosRect.top': photosRect.top,
+            'photosRect.bottom': photosRect.bottom,
+            visibleTop,
+            visibleBottom,
             topSpace,
             bottomSpace,
+            headerHeight: hh,
+            contactHeight: ch,
             headerTop,
             contactBottom
         });
