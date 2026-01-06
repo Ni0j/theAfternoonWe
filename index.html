@@ -174,38 +174,31 @@ font-style: normal;
         @media screen and (max-width: 768px) {
     
     body{
-        height:100svh;
-        overflow: hidden;
+        height: 100svh !important; 
+        overflow: hidden !important;
     }      
 
     .photos {
-        /* margin-top:; */
         position: absolute; 
-        width: 100%; 
-        overflow: visible;
-        display: block;
+        width: 90%; 
         scale: 300%;
-        /* grid-template-columns: repeat(1, 1fr);  */
-        /* gap: 14rem; */
-        transform: translate(-50%, -50%);/* 向左平移自身宽度的一半 */
+        /* top: 50%; left: 50%; 
+        transform: translate(-50%, -50%); */
+        /* transform: translate(-50%, -50%); */
+        bottom:auto !important;
     }
 
     .header, .contact {
         position: absolute;
-        left: auto;
-        transform: none;
         width: 90%;
+        top:auto;
+        bottom:auto;
+        margin: 0 !important;
         text-align: center;
+        z-index:20;
     }
 
-    .header{
-        left: 50%; 
-        transform: translate(-50%, 0);
-        top: 4svh;
-    }
-    .contact{
-        bottom:4vh;
-    }
+
 
 }
     
@@ -358,6 +351,60 @@ overlay.addEventListener("click", () => {
   overlay.classList.remove("active");
   overlayImg.src = "";
 });
+
+function positionElements() {
+        if (window.innerWidth > 768) return;
+
+        const header = document.querySelector('.header');
+        const contact = document.querySelector('.contact');
+        const photos = document.querySelector('.photos');
+
+        const vh = window.innerHeight;
+        
+        // 使用 getBoundingClientRect() 获取 photos 缩放后的实际位置
+        const photosRect = photos.getBoundingClientRect();
+        const photosTopY = photosRect.top;
+        const photosBottomY = photosRect.bottom;
+        
+        const hh = header.offsetHeight;
+        const ch = contact.offsetHeight;
+
+        // 计算上方和下方的空白区域
+        const topSpace = photosTopY;
+        const bottomSpace = vh - photosBottomY;
+
+        // Header 在上方空白区域居中
+        const headerTop = Math.max(0, (topSpace - hh) / 2);
+        
+        // Contact 在下方空白区域居中
+        const contactBottom = Math.max(0, (bottomSpace - ch) / 2);
+
+        // 应用定位
+        header.style.top = `${headerTop}px`;
+        header.style.bottom = 'auto';
+        
+        contact.style.bottom = `${contactBottom}px`;
+        contact.style.top = 'auto';
+
+        // Debug 信息（可选）
+        console.log({
+            vh,
+            photosTopY,
+            photosBottomY,
+            topSpace,
+            bottomSpace,
+            headerTop,
+            contactBottom
+        });
+    }
+
+    // 确保在内容加载完成后执行
+    window.addEventListener('load', () => {
+        setTimeout(positionElements, 200);
+    });
+    window.addEventListener('resize', () => {
+        setTimeout(positionElements, 100);
+    });
 </script>
 
 </html>
