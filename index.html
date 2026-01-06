@@ -118,6 +118,44 @@ font-style: normal;
             }
         }
 
+        @media screen and (max-width: 768px) {
+    
+    body{
+        height:100svh;
+        overflow: hidden;
+    }      
+
+    .photos {
+        /* margin-top:; */
+        position: absolute; 
+        width: 90%; 
+        overflow: visible;
+        display: grid;
+        grid-template-columns: repeat(1, 1fr); 
+        gap: 14rem;
+        transform: translate(-50%, -50%);/* 向左平移自身宽度的一半 */
+    }
+
+    .header, .contact {
+        position: absolute;
+        left: auto;
+        transform: none;
+        width: 90%;
+        text-align: center;
+    }
+
+    .header{
+        left: 50%; 
+        transform: translate(-50%, 0);
+        top: 6vh;
+    }
+    .contact{
+        bottom:4vh;
+    }
+
+}
+    
+
         .header {
             position: absolute;
             top:50%;
@@ -128,8 +166,9 @@ font-style: normal;
 
        .text{
         font-size: 1rem;
-        font-family: 'PP Editorial Old', italic, sans-serif;
-        font-style: italic;
+        font-family: "megumi", sans-serif;
+font-weight: 200;
+font-style: normal;
        }
 
        .contact{
@@ -143,8 +182,9 @@ font-style: normal;
 
        .contact_text{
         font-size: 1rem;
-        font-family: 'PP Editorial Old', italic, sans-serif;
-        font-style: italic;
+        font-family: "megumi", sans-serif;
+font-weight: 200;
+font-style: italic;
        }
 
        a{
